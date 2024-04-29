@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tabela de Produtos e Fornecedores</title>
+  <style>
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      border: 1px solid #d1d1d1dd;
+      padding: 8px;
+      text-align: left;
+      position: relative; /* Position relative para posicionamento absoluto */
+    }
+    th {
+      background-color: #138afa;
+      resize: none; /* Impede redimensionamento */
+      color: white; /* Cor do texto para branco */
+    }
+    /* Estilo para as células da coluna de produtos */
+    th:first-child, td:first-child {
+      width: 400px; /* Defina o tamanho desejado */
+      max-width: 400px; /* Evita que as células sejam redimensionadas */
+      min-width: 400px; /* Garante que as células tenham uma largura mínima */
+      font-family: Calibri, sans-serif; /* Defina a fonte para Calibri */
+      text-align: center;
+    }
+    /* Estilo para as células das colunas de fornecedores */
+    th:nth-child(n+2), td:nth-child(n+2) {
+      width: 90px; /* Largura fixa para as células dos fornecedores */
+      max-width: 90px; /* Evita que as células sejam redimensionadas */
+      min-width: 90px; /* Garante que as células tenham uma largura mínima */
+      position: relative; /* Posição relativa para posicionamento do botão */
+      font-family: Calibri, sans-serif; /* Defina a fonte para Calibri */
+      text-align: center;
+    }
+    /* Estilo para as células das colunas QUANT */
+    th:nth-child(3), td:nth-child(3), th:nth-child(5), td:nth-child(5), th:nth-child(7), td:nth-child(7), th:nth-child(9), td:nth-child(9), th:nth-child(11), td:nth-child(11), th:nth-child(13), td:nth-child(13), th:nth-child(15), td:nth-child(15), th:nth-child(17), td:nth-child(17) {
+      width: 35px; /* Largura fixa para as células QUANT */
+      max-width: 35px; /* Evita que as células sejam redimensionadas */
+      min-width: 35px; /* Garante que as células tenham uma largura mínima */
+      text-align: center;
+    }
+    /* Estilo para as células das colunas Requerido */
+    th:nth-child(17), td:nth-child(17) {
+      width: 70px; /* Largura fixa para as células QUANT */
+      max-width: 70px; /* Evita que as células sejam redimensionadas */
+      min-width: 70px; /* Garante que as células tenham uma largura mínima */
+      text-align: center;
+    }
+    /* Estilo para as células das colunas $ total */
+    th:nth-child(16), td:nth-child(16) {
+      width: 50px; /* Largura fixa para as células QUANT */
+      max-width: 50px; /* Evita que as células sejam redimensionadas */
+      min-width: 50px; /* Garante que as células tenham uma largura mínima */
+      text-align: center;
+    }
+    .button-container {
+      display: inline-block; /* Para posicionar os botões lado a lado */
+      margin-bottom: 10px; /* Margem inferior para separar da tabela */
+    }
+    .clear-button, .sort-button {
+      padding: 3px 8px; /* Espaçamento interno */
+      font-size: 12px; /* Tamanho da fonte */
+      cursor: pointer; /* Cursor de ponteiro ao passar o mouse */
+    }
+    /* Estilo para a lista suspensa */
+    .suggestion-list {
+      position: absolute;
+      top: 0;
+      left: 100%; /* Posiciona à direita da célula */
+      z-index: 1;
+      background-color: #fff;
+      border: 1px solid #ddd;
+      max-height: 200px; /* Altura máxima da lista suspensa */
+      overflow-y: auto; /* Adiciona barra de rolagem vertical se necessário */
+      display: none; /* Inicialmente oculto */
+    }
+    /* Estilo para o título "Cotação Azul" */
+    h2 {
+      font-family: 'Arial Black', sans-serif; /* Defina a fonte para Arial Black ou uma fonte de sua escolha */
+      font-size: 32px; /* Tamanho da fonte */
+      color: #333; /* Cor do texto */
+      text-align: center; /* Alinhamento centralizado */
+      margin-top: 20px; /* Espaçamento superior */
+      text-shadow: 2px 2px 2px #ccc; /* Sombra do texto */
+    }
+    /* Estilo para a linha verde */
+    .green-row {
+      background-color: #b8e994; /* Cor de fundo verde */
+    }
+  </style>
+</head>
+<body>
+
+<h2>Cotação Azul</h2>
+
+<div class="button-container">
+  <!-- Campo para adicionar arquivo CSV -->
+  <input type="file" id="csvInput" accept=".csv">
+  <!-- Botão para limpar a tabela -->
+  <button class="clear-button" onclick="limparTabela()">Limpar Dados</button>
+  <!-- Botão para ordenar os produtos em ordem alfabética -->
+  <button class="sort-button" onclick="ordenarProdutos()">Ordenar Produtos (A-Z)</button>
+  <button onclick="compartilharTabela()">Compartilhar</button>
+
+
+
+</div>
+
+<table id="dataTable">
+  <tr>
+    <th>Produto</th>
+    <th contenteditable></th>
+    <th>Quant</th>
+    <th contenteditable></th>
+    <th>Quant</th>
+    <th contenteditable></th>
+    <th>Quant</th>
+    <th contenteditable></th>
+    <th>Quant</th>
+    <th contenteditable></th>
+    <th>Quant</th>
+    <!-- Colunas adicionais de fornecedores e suas respectivas quantidades -->
+    <th contenteditable></th>
+    <th>Quant</th>
+    <th contenteditable></th>
+    <th>Quant</th>
+    <!-- Colunas adicionais $ TOTAL e REQUERIDO -->
+    <th>$ Total</th>
+    <th>Requerido</th>
+  </tr>
+  <!-- Adicione mais 100 linhas vazias -->
+  <!-- Utilize um loop para adicionar as 100 linhas -->
+  <!-- Por exemplo, em JavaScript: -->
+  <script>
+    for (let i = 0; i < 100; i++) {
+      document.write('<tr>');
+      for (let j = 0; j < 17; j++) {
+        if (j === 0) {
+          document.write('<td contenteditable oninput="showSuggestions(event, this)" style="font-family: Calibri, sans-serif;"></td>'); // Torna a célula editável
+        } else if (j % 2 === 0) {
+          document.write('<td contenteditable></td>');
+        } else {
+          document.write('<td contenteditable oninput="handleQuantityEdit(event, this)"></td>'); // Células de quantidade
+        }
+      }
+      document.write('</tr>');
+    }
+  </script>
+</table>
+
+<!-- Lista suspensa de sugestões -->
+<div class="suggestion-list" id="suggestionList"></div>
+
+<script>
+  // Função para limpar os dados das células da tabela
+  function limparTabela() {
+    const cells = document.querySelectorAll('#dataTable td[contenteditable]');
+    cells.forEach(cell => {
+      cell.textContent = '';
+    });
+    calcularSomaQuantidade(); // Após limpar, recalcular a soma
+  }
+
+  // Array de produtos disponíveis
+  let productList = [];
+
+  // Referência ao campo de entrada de arquivo CSV
+  const csvInput = document.getElementById('csvInput');
+
+  // Adicionar evento de mudança ao campo de entrada de arquivo CSV
+  csvInput.addEventListener('change', function() {
+    const file = this.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const content = e.target.result;
+        productList = content.trim().split('\n');
+      };
+      reader.readAsText(file);
+    }
+  });
+
+  // Função para exibir sugestões de produtos
+  function showSuggestions(event, cell) {
+    const inputValue = cell.textContent.toLowerCase().trim();
+    const suggestionList = document.getElementById('suggestionList');
+    suggestionList.innerHTML = ''; // Limpa a lista suspensa
+    const suggestions = productList.filter(product => product.toLowerCase().startsWith(inputValue));
+    if (suggestions.length > 0) {
+      suggestions.forEach(suggestion => {
+        const option = document.createElement('div');
+        option.textContent = suggestion;
+        option.onclick = function() {
+          cell.textContent = suggestion;
+          suggestionList.style.display = 'none'; // Oculta a lista suspensa ao selecionar uma opção
+        };
+        suggestionList.appendChild(option);
+      });
+      // Posiciona a lista suspensa ao lado da célula
+      suggestionList.style.top = `${cell.offsetTop}px`;
+      suggestionList.style.left = `${cell.offsetLeft + cell.offsetWidth}px`;
+      suggestionList.style.display = 'block'; // Exibe a lista suspensa
+    } else {
+      suggestionList.style.display = 'none'; // Oculta a lista suspensa se não houver sugestões
+    }
+  }
+  function compartilharTabela() {
+    // Seleciona a tabela
+    var tabela = document.getElementById('dataTable');
+    // Cria um objeto para armazenar os dados da tabela
+    var dados = {
+        header: [], // Armazenar os cabeçalhos das colunas
+        rows: []    // Armazenar os dados das linhas
+    };
+
+    // Obter cabeçalhos das colunas
+    var headers = tabela.querySelectorAll('th');
+    headers.forEach(function(header) {
+        dados.header.push(header.textContent.trim());
+    });
+
+    // Obter dados das células editáveis
+    var rows = tabela.querySelectorAll('tr');
+    rows.forEach(function(row) {
+        var rowData = [];
+        var cells = row.querySelectorAll('td[contenteditable]');
+        cells.forEach(function(cell) {
+            rowData.push(cell.textContent.trim());
+        });
+        dados.rows.push(rowData);
+    });
+
+    // Codifica os dados da tabela para que possam ser incluídos em um URL
+    var dadosCodificados = encodeURIComponent(JSON.stringify(dados));
+    // Monta o link compartilhável com os dados da tabela
+    var linkCompartilhavel = 'https://cotacaoazul.000webhostapp.com/?data=' + dadosCodificados;
+    // Abre uma nova janela com o link compartilhável
+    window.open(linkCompartilhavel, '_blank');
+  }
+
+  // Função para ordenar os produtos em ordem alfabética (A-Z)
+  function ordenarProdutos() {
+    const table = document.getElementById('dataTable');
+    const rows = Array.from(table.rows).slice(1); // Ignora o cabeçalho
+    const sortedRows = rows
+      .filter(row => row.cells[0].textContent.trim() !== '') // Ignora as linhas com células em branco na coluna de produtos
+      .sort((a, b) => {
+        const productNameA = a.cells[0].textContent.toLowerCase();
+        const productNameB = b.cells[0].textContent.toLowerCase();
+        return productNameA.localeCompare(productNameB); // Altera a ordem de classificação para A-Z
+      });
+    sortedRows.forEach((row, index) => {
+      table.rows[index + 1].parentNode.insertBefore(row, table.rows[index + 1]); // Insere a linha ordenada na mesma posição
+    });
+  
+    
+  }
+  // Fechar a lista suspensa ao clicar fora dela
+  window.onclick = function(event) {
+    const suggestionList = document.getElementById('suggestionList');
+    if (event.target !== suggestionList) {
+      suggestionList.style.display = 'none';
+    }
+  };
+</script>
+
+</body>
+</html>
