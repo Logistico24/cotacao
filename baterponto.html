@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Ponto</title>
+</head>
+<body>
+    <div id="paginaSelecao">
+        <h1>Selecione seu nome:</h1>
+        <select id="selecionarNome">
+            <option value="João">João</option>
+            <option value="Maria">Maria</option>
+            <!-- Adicione mais opções conforme necessário -->
+        </select>
+        <br>
+        <button onclick="irParaPaginaRegistro()">Próximo</button>
+        <br><br>
+        <button onclick="irParaPaginaRegistros()">Registros</button>
+    </div>
+
+    <div id="paginaRegistro" style="display: none;">
+        <h1>Selecione o tipo de ponto:</h1>
+        <input type="hidden" id="nomeFuncionario">
+        <input type="radio" name="tipoPonto" value="Chegada" id="chegada">
+        <label for="chegada">Chegada</label><br>
+        <input type="radio" name="tipoPonto" value="Pausa" id="pausa">
+        <label for="pausa">Pausa</label><br>
+        <input type="radio" name="tipoPonto" value="Retorno" id="retorno">
+        <label for="retorno">Retorno</label><br>
+        <input type="radio" name="tipoPonto" value="Saída" id="saida">
+        <label for="saida">Saída</label><br>
+        <br>
+        <button onclick="registrarPonto()">Registrar</button>
+    </div>
+
+    <script>
+        function irParaPaginaRegistro() {
+            var nomeFuncionario = document.getElementById("selecionarNome").value;
+            document.getElementById("nomeFuncionario").value = nomeFuncionario;
+            document.getElementById("paginaSelecao").style.display = "none";
+            document.getElementById("paginaRegistro").style.display = "block";
+        }
+
+        function irParaPaginaRegistros() {
+            var nomeFuncionario = document.getElementById("selecionarNome").value;
+            window.location.href = "registros.html?nome=" + encodeURIComponent(nomeFuncionario);
+        }
+
+        function registrarPonto() {
+            var nomeFuncionario = document.getElementById("nomeFuncionario").value;
+            var tipoPonto = document.querySelector('input[name="tipoPonto"]:checked').value;
+            alert("Ponto registrado para " + nomeFuncionario + ": " + tipoPonto);
+            // Aqui você pode enviar o registro para o servidor ou fazer outras operações com ele
+        }
+    </script>
+</body>
+</html>
